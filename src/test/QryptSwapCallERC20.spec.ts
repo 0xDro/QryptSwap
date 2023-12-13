@@ -2,12 +2,12 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 
-import { expandTo18Decimals, UniswapVersion } from "./shared/utilities";
+import { expandTo18Decimals, QryptSwapVersion } from "./shared/utilities";
 
 const TOTAL_SUPPLY = expandTo18Decimals(10000);
 const TEST_AMOUNT = expandTo18Decimals(10);
 
-describe("UniswapV2ERC20", () => {
+describe("QryptSwapERC20", () => {
   async function fixture() {
     const factory = await ethers.getContractFactory("ERC20");
     const token = await factory.deploy(TOTAL_SUPPLY);
@@ -18,8 +18,8 @@ describe("UniswapV2ERC20", () => {
   it("name, symbol, decimals, totalSupply, balanceOf, DOMAIN_SEPARATOR, PERMIT_TYPEHASH", async () => {
     const { token, wallet } = await loadFixture(fixture);
     const name = await token.name();
-    expect(name).to.eq("Uniswap V2");
-    expect(await token.symbol()).to.eq("UNI-V2");
+    expect(name).to.eq("QryptSwap");
+    expect(await token.symbol()).to.eq("QRYPT");
     expect(await token.decimals()).to.eq(18);
     expect(await token.totalSupply()).to.eq(TOTAL_SUPPLY);
     expect(await token.balanceOf(wallet.address)).to.eq(TOTAL_SUPPLY);
@@ -36,7 +36,7 @@ describe("UniswapV2ERC20", () => {
               ),
             ),
             ethers.keccak256(ethers.toUtf8Bytes(name)),
-            ethers.keccak256(ethers.toUtf8Bytes(UniswapVersion)),
+            ethers.keccak256(ethers.toUtf8Bytes(QryptSwapVersion)),
             chainId,
             await token.getAddress(),
           ],
@@ -129,7 +129,7 @@ describe("UniswapV2ERC20", () => {
       // "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
       {
         name: tokenName,
-        version: UniswapVersion,
+        version: QryptSwapVersion,
         chainId: chainId,
         verifyingContract: await token.getAddress(),
       },

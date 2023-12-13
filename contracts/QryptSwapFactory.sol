@@ -2,13 +2,13 @@
 
 pragma solidity =0.8.4;
 
-import {IUniswapV2Factory} from "./interfaces/IUniswapV2Factory.sol";
-import {IUniswapV2Pair} from "./interfaces/IUniswapV2Pair.sol";
-import {UniswapV2Pair} from "./UniswapV2Pair.sol";
+import {IQryptSwapFactory} from "./interfaces/IQryptSwapV2Factory.sol";
+import {IQryptSwapPair} from "./interfaces/IQryptSwapPair.sol";
+import {QryptSwapPair} from "./QryptSwapPair.sol";
 
-contract UniswapV2Factory is IUniswapV2Factory {
+contract QryptSwapFactory is IQryptSwapFactory {
     bytes32 public constant PAIR_HASH =
-        keccak256(type(UniswapV2Pair).creationCode);
+        keccak256(type(QryptSwapPair).creationCode);
 
     address public override feeTo;
     address public override feeToSetter;
@@ -28,22 +28,22 @@ contract UniswapV2Factory is IUniswapV2Factory {
         address tokenA,
         address tokenB
     ) external override returns (address pair) {
-        require(tokenA != tokenB, "UniswapV2: IDENTICAL_ADDRESSES");
+        require(tokenA != tokenB, "QryptSwap: IDENTICAL_ADDRESSES");
         (address token0, address token1) = tokenA < tokenB
             ? (tokenA, tokenB)
             : (tokenB, tokenA);
-        require(token0 != address(0), "UniswapV2: ZERO_ADDRESS");
+        require(token0 != address(0), "QryptSwap: ZERO_ADDRESS");
         require(
             getPair[token0][token1] == address(0),
-            "UniswapV2: PAIR_EXISTS"
+            "QryptSwap: PAIR_EXISTS"
         ); // single check is sufficient
 
         pair = address(
-            new UniswapV2Pair{
+            new QryptSwapPair{
                 salt: keccak256(abi.encodePacked(token0, token1))
             }()
         );
-        IUniswapV2Pair(pair).initialize(token0, token1);
+        IQryptSwapPair(pair).initialize(token0, token1);
         getPair[token0][token1] = pair;
         getPair[token1][token0] = pair; // populate mapping in the reverse direction
         allPairs.push(pair);
@@ -51,12 +51,12 @@ contract UniswapV2Factory is IUniswapV2Factory {
     }
 
     function setFeeTo(address _feeTo) external override {
-        require(msg.sender == feeToSetter, "UniswapV2: FORBIDDEN");
+        require(msg.sender == feeToSetter, "QryptSwap: FORBIDDEN");
         feeTo = _feeTo;
     }
 
     function setFeeToSetter(address _feeToSetter) external override {
-        require(msg.sender == feeToSetter, "UniswapV2: FORBIDDEN");
+        require(msg.sender == feeToSetter, "QryptSwap: FORBIDDEN");
         feeToSetter = _feeToSetter;
     }
 }

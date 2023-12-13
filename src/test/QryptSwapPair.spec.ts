@@ -7,20 +7,20 @@ import {
   encodePrice,
   MINIMUM_LIQUIDITY,
 } from "./shared/utilities";
-import { UniswapV2Pair, ERC20 } from "../../typechain-types";
+import { QryptSwapPair, ERC20 } from "../../typechain-types";
 import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { Signer } from "ethers";
 
-describe("UniswapV2Pair", () => {
+describe("QryptSwapPair", () => {
   async function fixture() {
     const [pairFactory, erc20Factory] = await Promise.all([
-      ethers.getContractFactory("UniswapV2Pair"),
+      ethers.getContractFactory("QryptSwapPair"),
       ethers.getContractFactory("ERC20"),
     ]);
     const [wallet, other] = await ethers.getSigners();
 
     const factory = await (
-      await ethers.getContractFactory("UniswapV2Factory")
+      await ethers.getContractFactory("QryptSwapFactory")
     ).deploy(wallet.address);
 
     const tokenA = (await erc20Factory.deploy(
@@ -38,7 +38,7 @@ describe("UniswapV2Pair", () => {
     await factory.createPair(tokenAAddress, tokenBAddress);
     const pair = pairFactory.attach(
       await factory.getPair(tokenAAddress, tokenBAddress),
-    ) as UniswapV2Pair;
+    ) as QryptSwapPair;
     const token0Address = await pair.token0();
     const token0 = tokenAAddress === token0Address ? tokenA : tokenB;
     const token1 = tokenAAddress === token0Address ? tokenB : tokenA;
@@ -81,7 +81,7 @@ describe("UniswapV2Pair", () => {
   async function addLiquidity(
     token0: ERC20,
     token1: ERC20,
-    pair: UniswapV2Pair,
+    pair: QryptSwapPair,
     wallet: Signer,
     token0Amount: bigint,
     token1Amount: bigint,
@@ -122,7 +122,7 @@ describe("UniswapV2Pair", () => {
       await token0.transfer(await pair.getAddress(), swapAmount);
       await expect(
         pair.swap(0, expectedOutputAmount + 1n, wallet.address, "0x"),
-      ).to.be.revertedWith("UniswapV2: K");
+      ).to.be.revertedWith("QryptSwap: K");
       await pair.swap(0, expectedOutputAmount, wallet.address, "0x");
     });
   });
@@ -152,7 +152,7 @@ describe("UniswapV2Pair", () => {
       await token0.transfer(await pair.getAddress(), inputAmount);
       await expect(
         pair.swap(outputAmount + 1n, 0n, wallet.address, "0x"),
-      ).to.be.revertedWith("UniswapV2: K");
+      ).to.be.revertedWith("QryptSwap: K");
       await pair.swap(outputAmount, 0, wallet.address, "0x");
     });
   });

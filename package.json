@@ -1,18 +1,16 @@
 {
-  "name": "@uniswap/v2-core",
-  "description": "Build uniswap v2 with solidity 0.8",
+  "name": "QryptSwap",
+  "description": "Quai's uni v2 fork",
   "version": "1.0.1",
-  "homepage": "https://uniswap.org",
+  "homepage": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/islishude/uniswapv2-solc0.8"
+    "url": "https://github.com/0xDro/QryptSwap"
   },
   "keywords": [
-    "uniswap",
-    "ethereum",
-    "v2",
-    "core",
-    "uniswap-v2"
+    "Quai",
+    "Qrypt",
+    "QryptSwap"
   ],
   "files": [
     "contracts",

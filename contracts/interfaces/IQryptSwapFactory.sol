@@ -2,7 +2,7 @@
 
 pragma solidity =0.8.4;
 
-interface IUniswapV2Factory {
+interface IQryptSwapFactory {
     event PairCreated(
         address indexed token0,
         address indexed token1,

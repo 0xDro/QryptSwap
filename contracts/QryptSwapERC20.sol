@@ -2,11 +2,11 @@
 
 pragma solidity =0.8.4;
 
-import {IUniswapV2ERC20} from "./interfaces/IUniswapV2ERC20.sol";
+import {IQryptSwapERC20} from "./interfaces/IQryptSwapERC20.sol";
 
-contract UniswapV2ERC20 is IUniswapV2ERC20 {
-    string public constant override name = "Uniswap V2";
-    string public constant override symbol = "UNI-V2";
+contract QryptSwapERC20 is IQryptSwapERC20 {
+    string public constant override name = "QryptSwap";
+    string public constant override symbol = "QRYPT";
     uint8 public constant override decimals = 18;
     uint256 public override totalSupply;
     mapping(address => uint256) public override balanceOf;
@@ -92,7 +92,7 @@ contract UniswapV2ERC20 is IUniswapV2ERC20 {
         bytes32 r,
         bytes32 s
     ) external override {
-        require(deadline >= block.timestamp, "UniswapV2: EXPIRED");
+        require(deadline >= block.timestamp, "QryptSwap: EXPIRED");
         bytes32 digest = keccak256(
             abi.encodePacked(
                 "\x19\x01",
@@ -112,7 +112,7 @@ contract UniswapV2ERC20 is IUniswapV2ERC20 {
         address recoveredAddress = ecrecover(digest, v, r, s);
         require(
             recoveredAddress != address(0) && recoveredAddress == owner,
-            "UniswapV2: INVALID_SIGNATURE"
+            "QryptSwap: INVALID_SIGNATURE"
         );
         _approve(owner, spender, value);
     }

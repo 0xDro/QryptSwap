@@ -2,7 +2,7 @@
 
 pragma solidity =0.8.4;
 
-interface IUniswapV2ERC20 {
+interface IQryptSwapERC20 {
     event Approval(
         address indexed owner,
         address indexed spender,
