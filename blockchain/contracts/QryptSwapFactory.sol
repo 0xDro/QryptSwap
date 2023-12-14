@@ -2,7 +2,7 @@
 
 pragma solidity =0.8.4;
 
-import {IQryptSwapFactory} from "./interfaces/IQryptSwapV2Factory.sol";
+import {IQryptSwapFactory} from "./interfaces/IQryptSwapFactory.sol";
 import {IQryptSwapPair} from "./interfaces/IQryptSwapPair.sol";
 import {QryptSwapPair} from "./QryptSwapPair.sol";
 
